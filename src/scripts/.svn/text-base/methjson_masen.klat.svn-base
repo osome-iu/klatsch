@@ -1,0 +1,102 @@
+//=====================================================================
+// This is the main Klatsch script for analyzing memes in the Truthy
+// database.  The script assumes that the memes have been partly
+// processed by "meth" (the accelerated C frontend).
+//
+// The input arguments are:
+//
+//   (1) the numeric ID of the meme to process
+//   (2) the path to the actor.gexf file from meth (all actors)
+//   (3) the path to the comp.gexf file from meth (largest component)
+//   (4) the destination directory for the PDF layout
+//=====================================================================
+
+// connect to the database
+f = feed("Truthy", {"database":"truthy_masen"});
+f.connect();
+
+// get our command-line arguments
+meme_id    = args.get(1).num();
+path_actor = args.get(2);
+path_comp  = args.get(3);
+img_dir    = args.get(4);
+
+// get the meme label (just for convenience)
+meme_label = f.memelabel(meme_id);
+
+// read in the actor graph
+g          = graph(path_actor);
+
+// get its size
+n = g.n();
+e = g.e();
+
+// get some initial stats
+d = {};
+d.set("meme_id",     meme_id);
+d.set("meme_label",  meme_label);
+d.set("nodes",       n);
+d.set("edges",       e);
+d.set("mean_cc",     g.cc());
+
+// get a hold of the node list
+nls = g.nodes().list();
+
+// process the in-degree distribution
+ls = g.ki().list();
+d.set("mean_k",      e / n);
+d.set("std_ki",      ls.std());
+d.set("skew_ki",     ls.skew());
+
+// find the node with maximal in-degree
+nmax = nls.sort(proc (a,b) if g.ki(a) < g.ki(b) then 1 else if g.ki(a) > g.ki(b) then -1 else 0).get(0);
+d.set("max_ki",      g.ki(nmax));
+d.set("max_ki_user", nmax.id());
+
+// process the out-degree distribution
+ls = g.ko().list();
+d.set("std_ko",      ls.std());
+d.set("skew_ko",     ls.skew());
+
+// find the node with maximal out-degree
+nmax = nls.sort(proc (a,b) if g.ko(a) < g.ko(b) then 1 else if g.ko(a) > g.ko(b) then -1 else 0).get(0);
+d.set("max_ko",      g.ko(nmax));
+d.set("max_ko_user", nmax.id());
+
+// process the in-strength distribution
+ls  = g.si().list();
+sum = ls.sum();
+d.set("mean_s",      sum / n);
+d.set("std_si",      ls.std());
+d.set("skew_si",     ls.skew());
+
+// find the node with maximal in-strength
+nmax = nls.sort(proc (a,b) if g.si(a) < g.si(b) then 1 else if g.si(a) > g.si(b) then -1 else 0).get(0);
+d.set("max_si",      g.si(nmax));
+d.set("max_si_user", nmax.id());
+
+// process the out-strength distribution
+ls = g.so().list();
+d.set("std_so",      ls.std());
+d.set("skew_so",     ls.skew());
+
+// find the node with maximal out-strength
+nmax = nls.sort(proc (a,b) if g.so(a) < g.so(b) then 1 else if g.so(a) > g.so(b) then -1 else 0).get(0);
+d.set("max_so",      g.so(nmax));
+d.set("max_so_user", nmax.id());
+
+// find the number of "entry nodes" (in-degree = 0)
+d.set("entry_nodes", nls.filter(proc (x) g.ki(x) == 0).len());
+
+// find the mean weight
+d.set("mean_w",      sum / e);
+
+// lay out the largest connected component
+g2 = graph(path_comp);
+if g2.e() > 0 then g2.layout({"iter":250}).export(img_dir + "/" + meme_id.str(), "pdf");
+
+// find the size of that component
+d.set("max_component", g2.n());
+
+// output the JSON
+println(json(d));

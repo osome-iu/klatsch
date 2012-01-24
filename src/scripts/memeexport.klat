@@ -1,0 +1,23 @@
+// Exports a meme graph using the given minimum degree for inclusion.
+
+f = feed("Truthy");
+f.connect();
+
+id     = args.get(1).num();
+
+println(f.memelabel(id));
+
+g      = graph();
+events = f.memeevents(id);
+for event in events
+  for e in event.edges()
+    g.add(e);
+f.update_trust(g);
+
+actor  = g.actorgraph();
+println("Actor network: N = ", actor.n(), ", E = ", actor.e());
+
+g = actor.comp(actor.comp_size().max_index());
+println("Largest component: N = ", g.n(), ", E = ", g.e());
+
+g.export(id.str(), "gexf");

@@ -1,0 +1,61 @@
+// Provides statistics in JSON format for a meme in the Truthy database.
+
+f = feed("Truthy");
+f.connect();
+
+meme    = args.get(1);
+img_dir = args.get(2);
+
+id     = f.memeid(meme);
+
+g      = graph();
+events = f.memeevents(id);
+for event in events
+  for e in event.edges()
+    g.add(e);
+f.update_trust(g);
+
+actor  = g.actorgraph();
+actor.export("test2", "gexf");
+n = actor.n();
+e = actor.e();
+
+d = {};
+d.set("id",        id);
+d.set("label",     meme);
+d.set("N",         n);
+d.set("E",         e);
+d.set("cc",        actor.cc());
+//d.set("comp_mean", n / actor.comp_count());
+//d.set("D",         actor.diameter());     RUNTIME TOO LONG
+//d.set("mod",       actor.modularity());
+//d.set("l",         actor.pathlength());   RUNTIME TOO LONG
+
+actor.comp(actor.comp_size().max_index()).layout({"iter":250}).export(img_dir + "/" + id.str(), "pdf");
+
+ls = actor.ki().list();
+d.set("k_mean",      e / n);
+d.set("ki_std",      ls.std());
+d.set("ki_max_norm", ls.max() / n);
+d.set("ki_skew",     ls.skew());
+
+ls = actor.ko().list();
+d.set("ko_std",      ls.std());
+d.set("ko_max_norm", ls.max() / n);
+d.set("ko_skew",     ls.skew());
+
+ls = actor.si().list();
+sum = ls.sum();
+d.set("s_mean",      sum / n);
+d.set("si_std",      ls.std());
+d.set("si_max_norm", ls.max() / sum);
+d.set("si_skew",     ls.skew());
+
+ls = actor.so().list();
+d.set("so_std",      ls.std());
+d.set("so_max_norm", ls.max() / sum);
+d.set("so_skew",     ls.skew());
+
+d.set("w_mean",      sum / e);
+
+println(json(d));

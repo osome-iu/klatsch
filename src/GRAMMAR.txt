@@ -1,0 +1,40 @@
+[program]       ::= @ | [expression] ; [program]
+
+[expression]    ::= [exp0] | [if] | [block] | [proc] | [while]
+
+[exp0]          ::= [exp1] | [exp1] = [expression]
+[exp1]          ::= [exp2] | [exp2] || [exp1]
+[exp2]          ::= [exp3] | [exp3] && [exp2]
+[exp3]          ::= [exp4] | ! [exp3]
+[exp4]          ::= [exp5] | [exp5] == [exp4] | [exp5] != [exp4]
+[exp5]          ::= [exp6] | [exp6] < [exp5] | [exp6] <= [exp5] | [exp6] > [exp5] | [exp6] >= [exp5]
+[exp6]          ::= [exp7] | [exp7] + [exp6] | [exp7] - [exp6]
+[exp7]          ::= [exp8] | [exp8] * [exp7] | [exp8] / [exp7] | [exp8] % [exp7]
+[exp8]          ::= [exp9] | + [exp8] | - [exp8]
+[exp9]          ::= [exp10] | [exp10] ^ [exp9]
+[exp10]         ::= [exp11] | [exp11] ( [exp-list] ) | [exp10] . [ID] ( [exp-list] )
+[exp11]         ::= [literal] | [lvalue] | ( [expression] )
+
+[literal]       ::= [STRING] | [NUMBER] | [dictionary] | [list]
+[lvalue]        ::= [ID]
+[dictionary]    ::= { [pair-list] }
+[list]          ::= [ [exp-list] ]
+[pair-list]     ::= @ | [pair] , [pair-list]
+[pair]          ::= [expression] : [expression]
+[id-list]       ::= @ | [ID] , [id-list]
+
+[if]            ::= IF [exp] THEN [exp] | IF [exp] THEN [exp] ELSE [exp]
+[block]         ::= BEGIN [program] END
+[proc]          ::= PROC ( [id-list] ) [expression]
+[while]         ::= WHILE [exp] [exp]
+[do]            ::= DO [exp] WHILE [exp]
+[for]           ::= FOR [ID] IN [exp] [exp]
+
+
+proc(s, p)
+  proc()
+    begin
+      while !s.done() && !p(s.current()) s.get();
+      s.get()
+    end
+    

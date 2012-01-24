@@ -1,0 +1,22 @@
+#!/usr/bin/perl -w
+# -*- perl -*-
+
+#=======================================================================
+# This is a simple wrapper for invoking the Klatsch framework.
+#
+# The idea here is to take care of firing up the JVM and passing along
+# command-line parameters so that as long as this script is in your
+# binary path and the KLATSCH variable is set, you shouldn't need to
+# fiddle about with any JVM parameters.
+#=======================================================================
+
+die "The environment variable KLATSCH must be set.\n" unless defined $ENV{KLATSCH};
+
+my $k   = $ENV{KLATSCH};
+
+$flags = "";
+$flags = "-Djava.awt.headless=true" unless (@ARGV > 0) && ($ARGV[0] eq '--gui');
+
+system('stty', '-icanon', 'min', '1', '-echo') if -t(STDIN);
+system('java', '-classpath', "$k/Klatsch.jar:$k/lib/mysql-connector-java-5.1.12-bin.jar:$k/lib/core.jar:$k/lib/gephi-toolkit.jar", 'edu.iu.cnets.klatsch.Main', @ARGV);
+system('stty', 'icanon', 'echo')               if -t(STDIN);

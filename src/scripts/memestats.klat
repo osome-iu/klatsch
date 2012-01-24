@@ -1,0 +1,56 @@
+// Prints statistics for a meme in the Truthy database.
+
+f = feed("Truthy");
+f.connect();
+
+meme   = args.get(1);
+
+id     = f.memeid(meme);
+
+g      = graph();
+events = f.memeevents(id);
+for event in events
+  for e in event.edges()
+    g.add(e);
+f.update_trust(g);
+
+actor  = g.actorgraph();
+
+println("Meme ID       = ", id);
+println("Label         = ", meme);
+println("Actors        = ", actor.n());
+println("Edges         = ", actor.e());
+println("Mean CC       = ", actor.cc());
+println("Mean Cmp Size = ", actor.n() / actor.comp_count());
+println("Diameter      = ", actor.diameter());
+println("Modularity    = ", actor.modularity());
+println("Path Length   = ", actor.pathlength());
+println();
+
+ls = actor.ki().list();
+println("k_in  : min  = ", ls.min());
+println("        mean = ", ls.mean());
+println("        std  = ", ls.std()); 
+println("        max  = ", ls.max());
+println();
+
+ls = actor.ko().list();
+println("k_out : min  = ", ls.min());
+println("        mean = ", ls.mean());
+println("        std  = ", ls.std()); 
+println("        max  = ", ls.max());
+println();
+
+ls = actor.si().list();
+println("s_in  : min  = ", ls.min());
+println("        mean = ", ls.mean());
+println("        std  = ", ls.std()); 
+println("        max  = ", ls.max());
+println();
+
+ls = actor.so().list();
+println("s_out : min  = ", ls.min());
+println("        mean = ", ls.mean());
+println("        std  = ", ls.std()); 
+println("        max  = ", ls.max());
+println();
