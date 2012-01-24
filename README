@@ -11,11 +11,4 @@ features and the framework for future expansion.  The language itself is somewhe
 Python and Scheme: dynamic types, procedures as first-class data, call-by-value semantics,
 and a nod toward object orientation.
 
-When things stabilize more, this file will contain more of a road map to the code.
 
-I aim to make sure the current version in the repository is always executable.
-
-Any questions?  Ask!
-
---Mark Meiss (meiss.mark@gmail.com)
-  
