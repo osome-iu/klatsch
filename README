@@ -1,14 +1,17 @@
 Welcome to Klatsch!
+(Version 1.0 -- written 9/2010 by Mark Meiss)
 
 What is Klatsch?
 
-Klatsch is an interactive Java application for analyzing time series data from social media.
-It's meant to be easy to interface to existing algorithms and graph representations and to
-produce pretty pictures in a variety of formats.
+The purpose of the Klatsch framework is to provide an easy-to-program, flexible
+interface for exploring and analyzing feeds of social media data.   It's meant
+to be easy to interface to existing algorithms and graph representations and to
+produce pretty pictures in a variety of formats.  The language itself is
+somewhere between Python and Scheme: dynamic types, procedures as first-class
+data, call-by-value semantics, and a nod toward object orientation.
 
-Things are a bit messy and fluid right now while I finish fleshing out the core language
-features and the framework for future expansion.  The language itself is somewhere between
-Python and Scheme: dynamic types, procedures as first-class data, call-by-value semantics,
-and a nod toward object orientation.
-
+Klatsch is built around a scripting language implemented by an interpreter
+written in Java.  You don’t need to know how to program Java in order to
+develop Klatsch scripts; that’s only necessary if you want to extend or modify
+the interpreter itself.
 
