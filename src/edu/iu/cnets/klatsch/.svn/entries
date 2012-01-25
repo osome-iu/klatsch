@@ -1,95 +1,0 @@
-10
-
-dir
-6278
-svn+ssh://krmckelv@smithers.cs.indiana.edu/u/cnets/repos/truthy/Klatsch/src/edu/iu/cnets/klatsch
-svn+ssh://krmckelv@smithers.cs.indiana.edu/u/cnets/repos
-
-
-
-2010-11-04T15:31:15.400365Z
-1353
-truthy
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-904abe9a-5cca-438f-8667-fdca663b7fad
-
-expression
-dir
-
-model
-dir
-
-lang
-dir
-
-feed
-dir
-
-pane
-dir
-
-gui
-dir
-
-Main.java
-file
-
-
-
-
-2011-11-04T16:21:44.000000Z
-867b590d0936a3f57daace780d61f28a
-2010-09-21T15:03:30.544615Z
-759
-mmeiss
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-5780
-
-registry
-dir
-
-misc
-dir
-
-stream
-dir
-
-parser
-dir
-
-exception
-dir
-
