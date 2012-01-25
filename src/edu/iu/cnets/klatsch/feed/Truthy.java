@@ -281,7 +281,7 @@ public class Truthy implements Feed
 					"WHERE events.id = event_memes.event_id AND meme_id = ? AND " +
 				  "(time_stamp >= ? AND time_stamp <= ?)"));
 			query.put(Query.EVENTS_BY_DATE,       cxn.prepareStatement(
-					"SELET time_stamp, user_id, reply_user_id, retweet_user_id, meme_id " +
+					"SELECT time_stamp, user_id, reply_user_id, retweet_user_id, meme_id " +
 					"FROM events, event_memes " +
 					"WHERE events.id = event_memes.event_id AND " +
 					"(time_stamp >= ? AND time_stamp <= ?"));
